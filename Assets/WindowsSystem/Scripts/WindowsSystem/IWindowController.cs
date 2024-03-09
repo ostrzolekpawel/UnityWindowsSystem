@@ -5,7 +5,7 @@ namespace OsirisGames.WindowsSystem
 {
     public interface IWindowController<in TType>
     {
-        UniTask<T> Push<T>(TType windowType) where T : Window;
+        UniTask<T> Push<T>(TType windowType) where T : IWindow;
         UniTask Pop();
         UniTask Pop(TType windowType);
         UniTask PopAll();

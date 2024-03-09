@@ -4,21 +4,38 @@ using UnityEngine;
 
 namespace OsirisGames.WindowsSystem
 {
-    public abstract class Window : MonoBehaviour
+    public enum State
     {
-        public enum State
-        {
-            None,
-            EnterStart,
-            EnterEnd,
-            ExitStart,
-            ExitEnd
-        }
+        None,
+        EnterStart,
+        EnterEnd,
+        ExitStart,
+        ExitEnd
+    }
 
-        public Action OnEnterStart;
-        public Action OnEnterEnd;
-        public Action OnExitStart;
-        public Action OnExitEnd;
+    public interface IWindow
+    {
+        Action OnEnterStart { get; set; }
+        Action OnEnterEnd { get; set; }
+        Action OnExitStart { get; set; }
+        Action OnExitEnd { get; set; }
+
+        State CurrentState { get; }
+
+        IWindowTransition WindowTransition { get; }
+
+        UniTask Setup();
+
+        UniTask Open();
+
+        UniTask Close();
+    }
+    public abstract class Window : MonoBehaviour, IWindow
+    {
+        public Action OnEnterStart { get; set; }
+        public Action OnEnterEnd { get; set; }
+        public Action OnExitStart { get; set; }
+        public Action OnExitEnd { get; set; }
 
         public State CurrentState { get; private set; } = State.None;
 

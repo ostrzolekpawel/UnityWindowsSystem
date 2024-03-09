@@ -6,15 +6,15 @@ namespace OsirisGames.WindowsSystem
 {
     public class WindowStack : IWindowStack
     {
-        private readonly Stack<Window> _windows;
+        private readonly Stack<IWindow> _windows;
 
-        public async UniTask Push(Window nextWindow)
+        public async UniTask Push(IWindow nextWindow)
         {
             _windows.Push(nextWindow);
             await nextWindow.Open();
         }
 
-        public async UniTask Pop(Func<Window, UniTask> onPop = null)
+        public async UniTask Pop(Func<IWindow, UniTask> onPop = null)
         {
             var window = _windows.Pop();
             if (window != null)
@@ -28,7 +28,7 @@ namespace OsirisGames.WindowsSystem
             }
         }
 
-        public async UniTask PopAll(Func<Window, UniTask> onPop = null)
+        public async UniTask PopAll(Func<IWindow, UniTask> onPop = null)
         {
             while (_windows.Count > 0)
             {

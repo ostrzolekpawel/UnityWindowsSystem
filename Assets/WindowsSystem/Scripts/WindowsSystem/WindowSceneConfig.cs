@@ -10,7 +10,7 @@ namespace OsirisGames.WindowsSystem
     {
         [SerializeField] private List<WindowData> _windows;
 
-        public Window GetWindow(WindowType type)
+        public IWindow GetWindow(WindowType type)
         {
             return _windows.FirstOrDefault(x => x.WindowType == type)?.Window;
         }

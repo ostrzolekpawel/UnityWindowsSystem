@@ -10,6 +10,6 @@ namespace OsirisGames.WindowsSystem
         [SerializeField] private Window _window;
 
         public WindowType WindowType => _windowType;
-        public Window Window => _window;
+        public IWindow Window => _window;
     }
 }
