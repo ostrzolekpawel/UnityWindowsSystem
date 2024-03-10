@@ -11,9 +11,10 @@ namespace OsirisGames.WindowsSystem
         public UniTask<T> GetWindow<T>(WindowType windowType) where T : IWindow
         {
             var window = _windows.GetWindow(windowType);
-            if (window != null)
+            if (window != null && window is T typedWindow)
             {
-                return UniTask.FromResult((T)window);
+                window.gameObject.SetActive(true);
+                return UniTask.FromResult(typedWindow);
             }
 
             return UniTask.FromResult<T>(default);

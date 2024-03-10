@@ -7,21 +7,25 @@ namespace OsirisGames.WindowsSystem
     {
         [SerializeField] private WindowSceneConfig _windows;
 
-        public UniTask<T> GetWindow<T>(WindowType windowType) where T : Window
+        public UniTask<T> GetWindow<T>(WindowType windowType) where T : IWindow
         {
             var window = _windows.GetWindow(windowType);
-            if (window)
+            if (window != null && window is T typedWindow)
             {
                 window.gameObject.SetActive(true);
-                return UniTask.FromResult(window as T);
+                return UniTask.FromResult(typedWindow);
             }
 
-            return UniTask.FromResult<T>(null);
+            return UniTask.FromResult<T>(default);
         }
 
-        public UniTask ReleaseWindow(Window window)
+        public UniTask ReleaseWindow(IWindow window)
         {
-            window.gameObject.SetActive(false);
+            if (window != null && window is Window monoWindow)
+            {
+                monoWindow.gameObject.SetActive(false);
+                // other wise throw exception
+            }
             return UniTask.CompletedTask;
         }
     }
