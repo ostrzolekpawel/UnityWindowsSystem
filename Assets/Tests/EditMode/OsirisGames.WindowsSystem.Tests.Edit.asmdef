@@ -4,7 +4,8 @@
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
-        "OsirisGames.WindowsSystem.Core"
+        "OsirisGames.WindowsSystem.Core",
+        "UniTask"
     ],
     "includePlatforms": [
         "Editor"
@@ -15,7 +16,8 @@
     "precompiledReferences": [
         "nunit.framework.dll",
         "Castle.Core.dll",
-        "Moq.dll"
+        "Moq.dll",
+        "System.Threading.Tasks.Extensions.dll"
     ],
     "autoReferenced": false,
     "defineConstraints": [
