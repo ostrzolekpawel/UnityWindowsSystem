@@ -4,32 +4,6 @@ using UnityEngine;
 
 namespace OsirisGames.WindowsSystem
 {
-    public enum State
-    {
-        None,
-        EnterStart,
-        EnterEnd,
-        ExitStart,
-        ExitEnd
-    }
-
-    public interface IWindow
-    {
-        Action OnEnterStart { get; set; }
-        Action OnEnterEnd { get; set; }
-        Action OnExitStart { get; set; }
-        Action OnExitEnd { get; set; }
-
-        State CurrentState { get; }
-
-        IWindowTransition WindowTransition { get; }
-
-        UniTask Setup();
-
-        UniTask Open();
-
-        UniTask Close();
-    }
     public abstract class Window : MonoBehaviour, IWindow
     {
         public Action OnEnterStart { get; set; }
@@ -37,7 +11,7 @@ namespace OsirisGames.WindowsSystem
         public Action OnExitStart { get; set; }
         public Action OnExitEnd { get; set; }
 
-        public State CurrentState { get; private set; } = State.None;
+        public WindowState CurrentState { get; private set; } = WindowState.None;
 
         private IWindowTransition _windowTransition;
         public IWindowTransition WindowTransition => _windowTransition ??= GetTransition(new InstantWindowTransition());
@@ -46,32 +20,32 @@ namespace OsirisGames.WindowsSystem
 
         public virtual async UniTask Open()
         {
-            if (CurrentState == State.EnterStart || CurrentState == State.EnterEnd)
+            if (CurrentState == WindowState.EnterStart || CurrentState == WindowState.EnterEnd)
             {
                 return;
             }
 
-            CurrentState = State.EnterStart;
+            CurrentState = WindowState.EnterStart;
             OnEnterStart?.Invoke();
             await WindowTransition.Enter();
 
-            CurrentState = State.EnterEnd;
+            CurrentState = WindowState.EnterEnd;
             OnEnterEnd?.Invoke();
             await Setup();
         }
 
         public virtual async UniTask Close()
         {
-            if (CurrentState == State.ExitStart || CurrentState == State.ExitEnd)
+            if (CurrentState == WindowState.ExitStart || CurrentState == WindowState.ExitEnd)
             {
                 return;
             }
 
-            CurrentState = State.ExitStart;
+            CurrentState = WindowState.ExitStart;
             OnExitStart?.Invoke();
             await WindowTransition.Exit();
 
-            CurrentState = State.ExitEnd;
+            CurrentState = WindowState.ExitEnd;
             OnExitEnd?.Invoke();
         }
 

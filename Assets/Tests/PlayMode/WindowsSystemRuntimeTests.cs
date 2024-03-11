@@ -11,15 +11,15 @@ public class WindowsSystemRuntimeTests
     public IEnumerator PushWindow_ReturnUniTask() => UniTask.ToCoroutine(async () =>
     {
         // Arrange
-        var windowProviderMock = new Mock<IWindowProvider<int>>();
+        var windowProviderMock = new Mock<IWindowProvider<int, IWindow>>();
         var windowStackMock = new Mock<IWindowStack>();
-        var windowController = new Mock<WindowControllerBase<int>>(windowProviderMock.Object, windowStackMock.Object);
+        var windowController = new Mock<WindowControllerBase<int, IWindow>>(windowProviderMock.Object, windowStackMock.Object);
         var windowType = 1;
         var window = new Mock<IWindow>();
         windowStackMock.Setup(x => x.Push(window.Object)).Returns(UniTask.CompletedTask);
-        windowProviderMock.Setup(x => x.GetWindow<IWindow>(windowType)).Returns(UniTask.FromResult(window.Object));
+        windowProviderMock.Setup(x => x.GetWindow(windowType)).Returns(UniTask.FromResult(window.Object));
         // Act
-        var result = await windowController.Object.Push<IWindow>(windowType);
+        var result = await windowController.Object.Push(windowType);
 
         // Assert
         Assert.AreEqual(window.Object, result);

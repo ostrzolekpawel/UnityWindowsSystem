@@ -2,9 +2,9 @@
 
 namespace OsirisGames.WindowsSystem
 {
-    public interface IWindowProvider<TType>
+    public interface IWindowProvider<TType, TWindow> where TWindow : IWindow
     {
-        UniTask<T> GetWindow<T>(TType windowType) where T : IWindow;
+        UniTask<TWindow> GetWindow(TType windowType);
         UniTask ReleaseWindow(IWindow window);
     }
 }

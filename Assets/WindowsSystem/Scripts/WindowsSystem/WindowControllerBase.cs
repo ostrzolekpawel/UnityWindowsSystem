@@ -2,20 +2,20 @@
 
 namespace OsirisGames.WindowsSystem
 {
-    public abstract class WindowControllerBase<TWindowType> : IWindowController<TWindowType>
+    public abstract class WindowControllerBase<TType, TWindow> : IWindowController<TType, TWindow> where TWindow : IWindow
     {
-        protected readonly IWindowProvider<TWindowType> _windowProvider;
+        protected readonly IWindowProvider<TType, TWindow> _windowProvider;
         protected readonly IWindowStack _windowStack;
-
-        public WindowControllerBase(IWindowProvider<TWindowType> windowProvider, IWindowStack windowStack)
+        
+        public WindowControllerBase(IWindowProvider<TType, TWindow> windowProvider, IWindowStack windowStack)
         {
             _windowProvider = windowProvider;
             _windowStack = windowStack;
         }
 
-        public async UniTask<T> Push<T>(TWindowType windowType) where T : IWindow
+        public async UniTask<TWindow> Push(TType windowType)
         {
-            T window = await _windowProvider.GetWindow<T>(windowType);
+            TWindow window = await _windowProvider.GetWindow(windowType);
 
             if (window != null)
             {
@@ -35,7 +35,7 @@ namespace OsirisGames.WindowsSystem
             await _windowProvider.ReleaseWindow(poped);
         }
 
-        public UniTask Pop(TWindowType windowType)
+        public UniTask Pop(TType windowType)
         {
             throw new System.NotImplementedException();
         }
@@ -50,7 +50,7 @@ namespace OsirisGames.WindowsSystem
             throw new System.NotImplementedException();
         }
 
-        public UniTask PopUntil(TWindowType windowType)
+        public UniTask PopUntil(TType windowType)
         {
             throw new System.NotImplementedException();
         }
